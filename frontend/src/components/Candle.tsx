@@ -57,7 +57,7 @@ const Candle = ({ data }: any) => {
 
     // Cleanup the chart on component unmount
     return () => chart.remove();
-  }, []);
+  }, [data]);
   return (
     <div
       ref={chartContainerRef}
