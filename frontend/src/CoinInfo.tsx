@@ -36,7 +36,9 @@ const CoinInfo = () => {
         </div>
       </div>
       <div className="flex justify-end gap-2 items-center">
-        <CreateTrigger state={state} userId={value?.user.id} />
+        {value?.user.isLoggedIn && (
+          <CreateTrigger state={state} userId={value?.user.id} />
+        )}
       </div>
       <div>
         <Chart
