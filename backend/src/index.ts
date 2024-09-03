@@ -11,8 +11,8 @@ import axios from "axios";
 import { router } from "./route";
 dotenv.config();
 const app = express();
-const FAIL_URL = "http://localhost:5173/error";
-const REDIRECT_URL = "http://localhost:5173";
+const FAIL_URL = "https://stock-alpha-ten.vercel.app/error";
+const REDIRECT_URL = "https://stock-alpha-ten.vercel.app";
 export const prisma = new PrismaClient();
 app.use(express.json());
 app.use(
@@ -24,7 +24,7 @@ app.use(
 );
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "https://stock-alpha-ten.vercel.app"],
     credentials: true,
   })
 );
