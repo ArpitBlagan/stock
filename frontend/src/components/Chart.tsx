@@ -28,83 +28,7 @@ const Chart = ({
   const [klines, setKLines] = useState<any[]>([]);
   const [change, setChange] = useState("interval");
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    let time;
-    if (interval == "Minute") {
-      time = "m";
-    } else if (interval == "Hour") {
-      time = "h";
-    } else {
-      time = "d";
-    }
-    if (socket && klines) {
-      const data = {
-        action: "SubAdd",
-        subs: [`24~Coinbase~${symbol.toUpperCase()}~USD~${time}`],
-      };
-      socket.send(JSON.stringify(data));
-      socket.onmessage = function (message: any) {
-        const ff = JSON.parse(message.data);
-        console.log(JSON.parse(message.data));
-        if (ff.TYPE == "24") {
-          setTimeout(() => {
-            let arr = klines;
-            // close: 27820.73;
-            // conversionSymbol: "";
-            // conversionType: "direct";
-            // high: 27883.77;
-            // low: 27150.5;
-            // open: 27261.17;
-            // time: 1682121600;
-            // volumefrom: 17443.02;
-            // volumeto: 479603472.21;
 
-            // ACTION: "I";
-            // CLOSE: 57877.74;
-            // FIRSTPRICE: 57837.87;
-            // FIRSTTS: 1725374400;
-            // FROMSYMBOL: "BTC";
-            // HIGH: 57888.1;
-            // LASTPRICE: 57877.74;
-            // LASTTS: 1725374459;
-            // LOW: 57815;
-            // MARKET: "Coinbase";
-            // MAXPRICE: 57888.1;
-            // MINPRICE: 57815;
-            // OPEN: 57837.88;
-            // TOSYMBOL: "USD";
-            // TOTALTRADES: 507;
-            // TS: 1725374400;
-            // TYPE: "24";
-            // UNIT: "m";
-            // VOLUMEFROM: 39.96327114;
-            // VOLUMETO: 2311532.42913836;
-            arr.push({
-              time: ff.TS,
-              open: ff.OPEN,
-              high: ff.HIGH,
-              low: ff.LOW,
-              close: ff.CLOSE,
-              conversionSymbol: "",
-            });
-            arr.sort((a, b) => a.time - b.time);
-            setKLines(arr);
-          }, 2000);
-
-          console.log("changing klines");
-        }
-      };
-    }
-    return () => {
-      if (socket) {
-        const data = {
-          action: "SubRemove",
-          subs: [`24~Coinbase~${symbol.toUpperCase()}~USD~${time}`],
-        };
-        socket.send(JSON.stringify(data));
-      }
-    };
-  }, [socket, change, klines]);
   useEffect(() => {
     const getKLines = async () => {
       try {
@@ -174,7 +98,12 @@ const Chart = ({
         </div>
       ) : (
         <div>
-          <Candle data={klines} />
+          <Candle
+            data={klines}
+            socket={socket}
+            interval={interval}
+            symbol={symbol}
+          />
         </div>
       )}
     </div>

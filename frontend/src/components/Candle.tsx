@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createChart } from "lightweight-charts";
 
-const Candle = ({ data }: any) => {
+const Candle = ({ data, socket, interval, symbol }: any) => {
   const chartContainerRef = useRef(null);
   const [candleChart, setCandleChart] = useState<any | null>(null);
   useEffect(() => {
@@ -16,6 +16,54 @@ const Candle = ({ data }: any) => {
       candleChart.setData(formattedData);
     }
   }, [data, candleChart]);
+  let lastUpdateTime = 0;
+  const throttleDelay = 100; // milliseconds
+
+  function updateChart(newDataPoint: any) {
+    console.log(newDataPoint);
+
+    // Proceed to update the chart
+    candleChart?.update(newDataPoint);
+  }
+  useEffect(() => {
+    let time;
+    if (interval == "Minute") {
+      time = "m";
+    } else if (interval == "Hour") {
+      time = "h";
+    } else {
+      time = "d";
+    }
+    if (socket) {
+      const data = {
+        action: "SubAdd",
+        subs: [`24~Coinbase~${symbol.toUpperCase()}~USD~${time}`],
+      };
+      socket.send(JSON.stringify(data));
+      socket.onmessage = function (message: any) {
+        const ff = JSON.parse(message.data);
+        console.log(ff);
+        if (ff.TYPE == "24" && candleChart) {
+          updateChart({
+            time: ff.TS,
+            open: ff.OPEN,
+            high: ff.HIGH,
+            low: ff.LOW,
+            close: ff.CLOSE,
+          });
+        }
+      };
+    }
+    return () => {
+      if (socket) {
+        const data = {
+          action: "SubRemove",
+          subs: [`24~Coinbase~${symbol.toUpperCase()}~USD~${time}`],
+        };
+        socket.send(JSON.stringify(data));
+      }
+    };
+  }, [socket, candleChart]);
   useEffect(() => {
     if (!chartContainerRef.current) return;
     // Create the chart

@@ -71,7 +71,7 @@ passport.use(
     {
       clientID: process.env.APP_ID as string,
       clientSecret: process.env.APP_SECRET as string,
-      callbackURL: "https://stock-bzrd.onrender.com/auth/google/callback",
+      callbackURL: "https://stock-bzrd.onrender.com/auth/facebook/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       // console.log("Profile:", profile);
