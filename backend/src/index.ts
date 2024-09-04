@@ -37,7 +37,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID as string,
       clientSecret: process.env.CLIENT_SECRET as string,
-      callbackURL: "/auth/google/callback",
+      callbackURL: "https://stock-bzrd.onrender.com/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       // Log the profile to see its structure
@@ -71,7 +71,7 @@ passport.use(
     {
       clientID: process.env.APP_ID as string,
       clientSecret: process.env.APP_SECRET as string,
-      callbackURL: "/auth/facebook/callback",
+      callbackURL: "https://stock-bzrd.onrender.com/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       // console.log("Profile:", profile);
