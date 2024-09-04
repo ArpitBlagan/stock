@@ -40,7 +40,6 @@ const Depth = ({ symbol }: any) => {
       clearInterval(interval);
     };
   }, []);
-  useEffect(() => {});
   return (
     <div>
       <p className="text-[20px] font-semibold text-center ">Depth</p>

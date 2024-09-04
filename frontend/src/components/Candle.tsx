@@ -16,15 +16,7 @@ const Candle = ({ data, socket, interval, symbol }: any) => {
       candleChart.setData(formattedData);
     }
   }, [data, candleChart]);
-  let lastUpdateTime = 0;
-  const throttleDelay = 100; // milliseconds
 
-  function updateChart(newDataPoint: any) {
-    console.log(newDataPoint);
-
-    // Proceed to update the chart
-    candleChart?.update(newDataPoint);
-  }
   useEffect(() => {
     let time;
     if (interval == "Minute") {
@@ -40,19 +32,43 @@ const Candle = ({ data, socket, interval, symbol }: any) => {
         subs: [`24~Coinbase~${symbol.toUpperCase()}~USD~${time}`],
       };
       socket.send(JSON.stringify(data));
+      let dd: any = null;
       socket.onmessage = function (message: any) {
         const ff = JSON.parse(message.data);
         console.log(ff);
-        if (ff.TYPE == "24" && candleChart) {
-          updateChart({
-            time: ff.TS,
-            open: ff.OPEN,
-            high: ff.HIGH,
-            low: ff.LOW,
-            close: ff.CLOSE,
-          });
+
+        if (ff.TYPE == "24") {
+          console.log(ff.TS);
+          if (!dd) {
+            dd = {
+              time: ff.TS,
+              open: parseFloat(ff.OPEN),
+              high: parseFloat(ff.HIGH),
+              low: parseFloat(ff.LOW),
+              close: parseFloat(ff.CLOSE),
+            };
+          } else {
+            const fff = {
+              time: ff.TS,
+              open: parseFloat(ff.OPEN),
+              high:
+                parseFloat(ff.HIGH) > dd?.high ? parseFloat(ff.HIGH) : dd?.high,
+              low: parseFloat(ff.LOW) < dd?.low ? parseFloat(ff.LOW) : dd?.low,
+              close: parseFloat(ff.CLOSE),
+            };
+            dd = fff;
+          }
         }
       };
+      if (candleChart) {
+        setInterval(() => {
+          console.log("updating", dd);
+          if (candleChart && dd) {
+            console.log(dd);
+            candleChart?.update(dd);
+          }
+        }, 10000);
+      }
     }
     return () => {
       if (socket) {
@@ -88,6 +104,13 @@ const Candle = ({ data, socket, interval, symbol }: any) => {
       },
       crossHair: {
         mode: 1, // Set crosshair mode
+      },
+      priceScale: {
+        scaleMargins: {
+          top: 0.1,
+          bottom: 0.1,
+        },
+        mode: 3,
       },
     });
 
