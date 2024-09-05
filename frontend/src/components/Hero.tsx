@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import Typewriter from "typewriter-effect";
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import gsap from "gsap";
 const Hero = () => {
   const dd = useRef(null);
   function createStars(type: any, quantity: any) {
@@ -18,11 +19,13 @@ const Hero = () => {
   function randomNumber(min: any, max: any) {
     return Math.floor(Math.random() * max) + min;
   }
+  const finalPath = "M 10 150 Q 500 150 990 150";
   useEffect(() => {
     createStars(1, 100);
     createStars(2, 90);
     createStars(3, 100);
   }, []);
+
   return (
     <div
       ref={dd}
@@ -53,6 +56,40 @@ const Hero = () => {
           }}
         />
       </p>
+      <div
+        className="h-[300px] w-[1000px] z-10 relative flex items-center justify-center"
+        onMouseMove={(event) => {
+          const div = event.currentTarget;
+          // Calculate mouse position relative to the div
+          const rect = div.getBoundingClientRect();
+          const mouseX = event.clientX - rect.left;
+          const mouseY = event.clientY - rect.top;
+
+          console.log({ mouseX, mouseY });
+          let pathe = `M 10 150 Q ${mouseX} ${mouseY} 990 150`;
+          gsap.to("svg path", {
+            attr: { d: pathe },
+            duration: 0.3,
+            ease: "power3.out",
+          });
+        }}
+        onMouseLeave={() => {
+          console.log("leave");
+          gsap.to("svg path", {
+            attr: { d: finalPath },
+            duration: 1.2,
+            ease: "elastic.out(1.0.2)",
+          });
+        }}
+      >
+        <svg width="1000" height="300">
+          <path
+            d="M 10 150 Q 500 150 990 150"
+            stroke="white"
+            fill="transparent"
+          />
+        </svg>
+      </div>
       <Link
         to="/coins"
         className="glow-on-hover text-white text-[20px] flex items-center justify-center z-10"
