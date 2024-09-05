@@ -3,6 +3,8 @@ import Typewriter from "typewriter-effect";
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 const Hero = () => {
   const dd = useRef(null);
   function createStars(type: any, quantity: any) {
@@ -25,12 +27,26 @@ const Hero = () => {
     createStars(2, 90);
     createStars(3, 100);
   }, []);
+  useEffect(() => {
+    gsap.to("#page2 p", {
+      transform: "translate(-300%)",
+      duration: 0.2,
+      scrollTrigger: {
+        trigger: "#page2",
+        scroller: "body",
+        start: "top 0%",
+        end: "top -100%",
+        scrub: 3,
+        pin: true,
+      },
+    });
+  }, []);
 
   return (
     <div
       ref={dd}
       className="
-    flex items-center justify-center flex-col h-[70dvh] gap-5 my-2 px-4  rounded-t-xl"
+    flex items-center justify-center flex-col gap-5 my-2 px-4  rounded-t-xl overflow-x-hidden"
     >
       <motion.p
         initial={{ opacity: 0, y: -100 }}
@@ -96,6 +112,14 @@ const Hero = () => {
       >
         Coins
       </Link>
+      <div
+        className="min-h-screen flex items-center overflow-x-hidden"
+        id="page2"
+      >
+        <p className="text-[35vw] bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 text-transparent bg-clip-text">
+          EXPERIENCE
+        </p>
+      </div>
     </div>
   );
 };
