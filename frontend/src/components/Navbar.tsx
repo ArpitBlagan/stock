@@ -31,6 +31,9 @@ const Navbar = () => {
   return (
     <div className="flex items-center px-2 gap-2 mb-5">
       <Link to="/" className="text-[30px] font-custom">
+        Me
+      </Link>
+      <Link to="/" className="text-[30px] font-custom">
         Market
       </Link>
 
