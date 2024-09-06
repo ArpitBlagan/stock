@@ -1,6 +1,6 @@
 import "./App.css";
 import Hero from "./components/Hero";
-import Navbar from "./components/Navbar";
+// import Navbar from "./components/Navbar";
 import { ReactLenis, useLenis } from "lenis/react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Coins from "./Coins";
@@ -13,7 +13,8 @@ import Triggers from "./Triggers";
 import Font from "./Font";
 import "remixicon/fonts/remixicon.css";
 function App() {
-  const lenis = useLenis(({ scroll }) => {
+  useLenis(({ scroll }) => {
+    console.log(scroll);
     // called every scroll
   });
   return (
