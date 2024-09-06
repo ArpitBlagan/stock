@@ -49,6 +49,31 @@ const Font = () => {
     anothertl.to("#text", {
       width: "100%",
     });
+    const project = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#project",
+        start: "50% 50%",
+        end: "120% 50%",
+        scrub: 2,
+        markers: true,
+        pin: true,
+      },
+    });
+    project.from("#pro1", {
+      opacity: 0,
+      left: "-40%",
+      ease: "sine.inOut",
+    });
+    project.from("#pro2", {
+      opacity: 0,
+      left: "-40%",
+      ease: "sine.inOut",
+    });
+    project.from("#pro3", {
+      opacity: 0,
+      left: "-40%",
+      ease: "sine.inOut",
+    });
     return () => {
       // Clean up GSAP timeline on unmount
       tl.kill();
@@ -154,24 +179,89 @@ const Font = () => {
           </div>
         </div>
       </div>
-      <div className="h-[100vh] w-full">
+      <div className="h-[100vh] w-full relative" id="project">
         <div className="flex flex-col items-end py-[1vh] px-[3vh]">
           <p className="text-[4vw]">My Work</p>
-          <p className="text-[2vw] opacity-[0.4]">
-            Projects <i className="ri-task-line text-[40px]"></i>
+          <p className="text-[2vw] opacity-[0.4] flex items-center gap-3">
+            <span>Projects</span> <i className="ri-task-line text-[40px]"></i>
           </p>
+        </div>
+        <div
+          id="pro1"
+          className="absolute flex flex-col gap-5 top-[5%] left-[10%] w-[400px] border rounded-md py-[1vh] px-[3vh]"
+        >
+          <h1 className="text-[2vw] text-center">Ping Me</h1>
+          <p className="text-gray-800 text-xl">
+            A Chat app using ws and mediasoup library 🚀. The application
+            leverages the ws library to enable WebSocket communication,
+            providing users with a seamless and instant messaging and file
+            sharing experience.
+          </p>
+          <div className="w-full flex items-center justify-center">
+            <a
+              href="https://chat-assignment-lyart.vercel.app"
+              target="_blank"
+              className="w-1/2 py-2 px-4 rounded-md border text-center"
+            >
+              See
+            </a>
+          </div>
+        </div>
+        <div
+          id="pro2"
+          className="absolute flex flex-col gap-5 top-[20%] left-[40%] w-[400px] border rounded-md py-[1vh] px-[3vh]"
+        >
+          <h1 className="text-[2vw] text-center">RT-Quiz</h1>
+          <p className="text-gray-800 text-xl">
+            Hello there, REAL TIME QUIZ app using socket('ws'). please test it
+            give a star if you like the work. How it works : If you want to
+            create a quiz as admin need to login and create a quiz and start the
+            quiz share the given code to other user to join the quiz as
+            participants. If you simply want to give a quiz then no need to
+            login enter you name and key of that quiz and enter the quiz. As
+            this is real time it is controlled by the admin of quiz to show
+            result and move to question etc..
+          </p>
+          <div className="w-full flex items-center justify-center">
+            <a
+              href="https://github.com/ArpitBlagan/RealTimeQuiz-WebSocket-"
+              target="_blank"
+              className="w-1/2 py-2 px-4 rounded-md border text-center"
+            >
+              See
+            </a>
+          </div>
+        </div>
+        <div
+          id="pro3"
+          className="absolute flex flex-col gap-5 top-[35%] left-[70%] w-[400px] border rounded-md py-[1vh] px-[3vh]"
+        >
+          <h1 className="text-[2vw] text-center">Other Projects</h1>
+          <p className="text-gray-800 text-xl">
+            I have also build some other projects which all our avaliable on my
+            github and you can also look can my recent opensource contributions.
+          </p>
+          <div className="w-full flex items-center justify-center">
+            <a
+              href="https://github.com/ArpitBlagan"
+              target="_blank"
+              className="w-1/2 py-2 px-4 rounded-md border text-center"
+            >
+              See
+            </a>
+          </div>
         </div>
       </div>
       <div className="h-[82vh] flex flex-col">
         <p className="text-[5vw] text-center">Try Me</p>
-        <div className="flex-1 flex items-center justify-center relative w-full overflow-hidden">
+        <div className="flex-1 flex items-center  justify-center relative w-full overflow-hidden">
           <video
             id="video"
             src={video}
             autoPlay
             muted
             loop
-            className="opacity-[0] absolute top-[50%] left-[50%] w-[100%]"
+            className="h-full opacity-[0] absolute top-[50%] left-[50%] w-full"
             style={{ transform: "translate(-50%,-50%)" }}
           ></video>
           <div className="cursor-pointer z-10 flex flex-col gap-2 py-[1vh] px-[2vh] bg-white">
