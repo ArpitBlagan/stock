@@ -55,7 +55,6 @@ const Font = () => {
         start: "50% 50%",
         end: "120% 50%",
         scrub: 2,
-        markers: true,
         pin: true,
       },
     });
